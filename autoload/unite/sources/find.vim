@@ -8,6 +8,7 @@
 call unite#util#set_default('g:unite_source_find_command', 'find')
 call unite#util#set_default('g:unite_source_find_default_opts', '')
 call unite#util#set_default('g:unite_source_find_default_expr', '-name ')
+call unite#util#set_default('g:unite_source_find_encoding', 'char')
 "}}}
 
 function! unite#sources#find#define() abort "{{{
@@ -81,7 +82,7 @@ function! s:source.gather_candidates(args, context) abort "{{{
         \ a:context.source__input)
   call unite#print_source_message('Command-line: ' . cmdline, s:source.name)
   let a:context.source__proc = vimproc#popen3(
-        \ vimproc#util#iconv(cmdline, &encoding, 'char'))
+        \ vimproc#util#iconv(cmdline, &encoding, g:unite_source_find_encoding))
 
   " Close handles.
   call a:context.source__proc.stdin.close()
@@ -99,7 +100,7 @@ function! s:source.async_gather_candidates(args, context) abort "{{{
 
   let candidates = map(filter(
         \ stdout.read_lines(-1, 1000), "v:val !~ '^\\s*$'"),
-        \ "fnamemodify(unite#util#iconv(v:val, 'char', &encoding), ':p')")
+        \ "fnamemodify(unite#util#iconv(v:val, g:unite_source_find_encoding, &encoding), ':p')")
 
   let cwd = getcwd()
   call unite#util#lcd(a:context.source__targets[0])
