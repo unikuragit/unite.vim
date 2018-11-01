@@ -497,13 +497,15 @@ python3 <<END
 import os
 import os.path
 import vim
-os.stat_float_times(False)
+import math
+# Removed os.stat_float_times from Python3.7
+#os.stat_float_times(False)
 try:
   ftime = os.path.getmtime(vim.eval(\
     'unite#util#iconv(a:filename, &encoding, "char")'))
 except:
   ftime = -1
-vim.command('let filetime = ' + str(ftime))
+vim.command('let filetime = ' + str(math.floor(ftime)))
 END
   endif"}}}
 
