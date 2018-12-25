@@ -423,10 +423,8 @@ function! unite#sources#file#create_vimfiler_dict(candidate, exts) abort "{{{
 
     let a:candidate.vimfiler__filesize =
           \ getfsize(a:candidate.action__path)
-    if !s:is_windows
-      let a:candidate.vimfiler__is_writable =
-            \ filewritable(a:candidate.action__path)
-    endif
+    let a:candidate.vimfiler__is_writable =
+          \ filewritable(a:candidate.action__path)
   elseif !s:is_windows
     let a:candidate.vimfiler__is_writable =
           \ filewritable(a:candidate.action__path)
