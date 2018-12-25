@@ -918,6 +918,7 @@ function! unite#view#_get_status_string(unite) abort "{{{
   let statusline .= "%#uniteStatusLineNR#%{printf('%'.len(b:unite.candidates_len"
   let statusline .= "+b:unite.prompt_linenr).'d/%d',line('.'),"
   let statusline .= "b:unite.candidates_len+b:unite.prompt_linenr)}%*"
+  let statusline .= "%#uniteStatusHead#%{unite#view#_get_status_head_string()}%*"
   return statusline
 endfunction"}}}
 
