@@ -33,12 +33,16 @@ function! s:kind.action_table.execute.func(candidate) abort "{{{
   endif
 
   let cmdline = unite#util#is_windows() ?
-        \ join(map(args, '"\"".v:val."\""')) :
+        \ substitute(join(map(args, '"\"".v:val."\""')), '/', '\\', 'g') :
         \ args[0] . ' ' . join(map(args[1:], "shellescape(v:val)"))
 
   if unite#util#is_windows()
-    let cmdline = unite#util#iconv(cmdline, &encoding, 'char')
-    silent execute ':!start' cmdline
+    let tmpbat = tempname() . '.bat'
+    let lines = []
+    call add(lines, '@echo off')
+    call add(lines, 'start "" /b ' . cmdline)
+    call writefile(map(lines, 'iconv(v:val, &encoding, "char") . "\r"'), tmpbat, '')
+    silent execute ':!start "' . tmpbat . '"'
   else
     call system(cmdline . ' &')
   endif
