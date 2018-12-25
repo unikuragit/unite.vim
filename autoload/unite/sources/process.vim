@@ -123,7 +123,7 @@ function! s:kill(signal, candidates) abort "{{{
 
   for candidate in a:candidates
     call unite#util#system(unite#util#is_windows() ?
-          \ printf('taskkill /PID %d', candidate.action__pid) :
+          \ printf('taskkill /F /PID %d', candidate.action__pid) :
           \  printf('kill -%s %d', a:signal, candidate.action__pid)
           \ )
     if unite#util#get_last_status()
